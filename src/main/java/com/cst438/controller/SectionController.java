@@ -66,7 +66,7 @@ public class SectionController {
                 s.getTerm().getYear(),
                 s.getTerm().getSemester(),
                 s.getCourse().getCourseId(),
-		s.getCourse().getTitle(),
+                s.getCourse().getTitle(),
                 s.getSecId(),
                 s.getBuilding(),
                 s.getRoom(),
@@ -112,10 +112,7 @@ public class SectionController {
         }
     }
 
-
-    // get Sections for a course with request params year, semester
-    // example URL   /course/cst363/sections?year=2024&semester=Spring
-    // also specify partial courseId   /course/cst/sections?year=2024&semester=Spring
+    // get Sections with query parms courseId, year, semester
     @GetMapping("/courses/{courseId}/sections")
     public List<SectionDTO> getSections(
             @PathVariable("courseId") String courseId,
@@ -136,7 +133,7 @@ public class SectionController {
                     s.getTerm().getYear(),
                     s.getTerm().getSemester(),
                     s.getCourse().getCourseId(),
-		    s.getCourse().getTitle(),
+                    s.getCourse().getTitle(),
                     s.getSecId(),
                     s.getBuilding(),
                     s.getRoom(),
@@ -150,7 +147,6 @@ public class SectionController {
     }
 
     // get Sections for an instructor
-    // example URL  /sections?instructorEmail=dwisneski@csumb.edu&year=2024&semester=Spring
     @GetMapping("/sections")
     public List<SectionDTO> getSectionsForInstructor(
             @RequestParam("email") String instructorEmail,
@@ -171,7 +167,7 @@ public class SectionController {
                     s.getTerm().getYear(),
                     s.getTerm().getSemester(),
                     s.getCourse().getCourseId(),
-		    s.getCourse().getTitle(),
+                    s.getCourse().getTitle(),
                     s.getSecId(),
                     s.getBuilding(),
                     s.getRoom(),
@@ -182,7 +178,7 @@ public class SectionController {
         }
         return dto_list;
     }
-	
+
     @GetMapping("/sections/open")
     public List<SectionDTO> getOpenSectionsForEnrollment() {
 
@@ -196,7 +192,7 @@ public class SectionController {
                     s.getTerm().getYear(),
                     s.getTerm().getSemester(),
                     s.getCourse().getCourseId(),
-		    s.getCourse().getTitle(),
+                    s.getCourse().getTitle(),
                     s.getSecId(),
                     s.getBuilding(),
                     s.getRoom(),
