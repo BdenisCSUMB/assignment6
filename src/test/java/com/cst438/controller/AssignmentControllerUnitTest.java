@@ -2,10 +2,7 @@ package com.cst438.controller;
 
 import com.cst438.domain.Assignment;
 import com.cst438.domain.AssignmentRepository;
-import com.cst438.domain.Section;
-import com.cst438.domain.SectionRepository;
 import com.cst438.dto.AssignmentDTO;
-import com.cst438.dto.SectionDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,15 +13,9 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.util.List;
-
-import static com.cst438.test.utils.TestUtils.asJsonString;
-import static com.cst438.test.utils.TestUtils.fromJsonString;
 import static org.junit.jupiter.api.Assertions.*;
 
-/*
- * example of unit test to add a section to an existing course
- */
+// Unit test for Assignments: Add, Add past due, Add bad section number
 
 @AutoConfigureMockMvc
 @SpringBootTest
@@ -101,7 +92,7 @@ public class AssignmentControllerUnitTest {
     }
 
     @Test
-    public void addAssignmentFailsSecNo( ) throws Exception {
+    public void addAssignmentFailsDueDate( ) throws Exception {
 
         MockHttpServletResponse response;
 
@@ -112,8 +103,42 @@ public class AssignmentControllerUnitTest {
                 "9999-05-05",
                 "cst338",
                 1,
+                6
+        );
+
+        // issue the POST request
+        response = mvc.perform(
+                        MockMvcRequestBuilders
+                                .post("/assignments")
+                                .accept(MediaType.APPLICATION_JSON)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(asJsonString(assignment)))
+                .andReturn()
+                .getResponse();
+
+        // response should be 400, BAD_REQUEST
+        assertEquals(422, response.getStatus());
+
+        // check the expected error message
+        String message = response.getErrorMessage();
+        assertEquals("due date not valid", message);
+
+    }
+
+    @Test
+    public void addAssignmentFailsSecNo( ) throws Exception {
+
+        MockHttpServletResponse response;
+
+        // course id cst599 does not exist.
+        AssignmentDTO assignment = new AssignmentDTO(
+                0,
+                "test",
+                "2024-05-05",
+                "cst338",
+                1,
                 -1
-        );;
+        );
 
         // issue the POST request
         response = mvc.perform(

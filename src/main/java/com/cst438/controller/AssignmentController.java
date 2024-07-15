@@ -70,6 +70,11 @@ public class AssignmentController {
         if (s==null) {
             throw  new ResponseStatusException( HttpStatus.NOT_FOUND, "section not found");
         }
+        if (a.getDueDate().before(s.getTerm().getStartDate()) ||
+                a.getDueDate().after(s.getTerm().getEndDate()))
+        {
+            throw new ResponseStatusException( HttpStatus.UNPROCESSABLE_ENTITY, "due date not valid");
+        }
         a.setSection(s);
         assignmentRepository.save(a);
 
