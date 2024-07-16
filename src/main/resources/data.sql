@@ -10,8 +10,7 @@ insert into user_table (id, name, email, password, type) values
 (1, 'david wisneski', 'dwisneski@csumb.edu', '', 'INSTRUCTOR'),
 (2, 'joshua gross', 'jgross@csumb.edu', '', 'INSTRUCTOR'),
 (3, 'thomas edison', 'tedison@csumb.edu', '', 'STUDENT'),
-(4, 'fred brooks', 'fbrooks@csumb.edu', '', 'ADMIN'),
-(5, 'test student','tstudent@csumb.edu','','STUDENT');
+(4, 'fred brooks', 'fbrooks@csumb.edu', '', 'ADMIN');
 
 insert into course values
 ('cst238', 'Introduction to Programming', 5),
@@ -34,8 +33,7 @@ insert into section(section_no, course_id, sec_id, term_id, building, room, time
 (7, 'cst338', 2, 9, '052', '100', 'M W 10:00-11:50', 'jgross@csumb.edu'),
 (8, 'cst363', 1, 9, '052', '104', 'M W 10:00-11:50', 'dwisneski@csumb.edu'),
 (9, 'cst363', 2, 9, '052', '102', 'M W 2:00-3:50', 'dwisneski@csumb.edu'),
-(10, 'cst438', 1, 9, '052', '222', 'T Th 12:00-1:50', 'dwisneski@csumb.edu'),
-(11, 'cst363', 1, 10, '052', '104', 'M W 10:00-11:50', 'dwisneski@csumb.edu');
+(10, 'cst438', 1, 9, '052', '222', 'T Th 12:00-1:50', 'dwisneski@csumb.edu');
 
 insert into enrollment (enrollment_id, grade, section_no, user_id ) values
 (1, 'A', 1, 3),
