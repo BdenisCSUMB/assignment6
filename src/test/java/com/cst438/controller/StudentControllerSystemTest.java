@@ -80,7 +80,11 @@ public class StudentControllerSystemTest {
         Thread.sleep(SLEEP_DURATION);
 
         // find and click button to add a section
-        driver.findElement(By.id("qonAdd")).click();
+        WebElement row363 = driver.findElement(By.xpath("//tr[td='12']"));
+        List<WebElement> buttons = row363.findElements(By.tagName("button"));
+        // delete is the second button
+        assertEquals(1, buttons.size());
+        buttons.get(0).click();
         Thread.sleep(SLEEP_DURATION);
 
         // find the YES to confirm button
@@ -112,7 +116,11 @@ public class StudentControllerSystemTest {
         /* drop the section */
 
         // find and click button to drop
-        driver.findElement(By.id("qdrop")).click();
+        row363 = driver.findElement(By.xpath("//tr[td='12']"));
+        buttons = row363.findElements(By.tagName("button"));
+        // delete is the second button
+        assertEquals(1, buttons.size());
+        buttons.get(0).click();
         Thread.sleep(SLEEP_DURATION);
 
         // find the YES to confirm button
