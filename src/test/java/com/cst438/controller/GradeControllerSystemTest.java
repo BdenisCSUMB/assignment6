@@ -119,7 +119,6 @@ public class GradeControllerSystemTest {
         assertTrue(successMessage.getText().contains("Grades submitted successfully"));
     }
 
-
 }
 
 
