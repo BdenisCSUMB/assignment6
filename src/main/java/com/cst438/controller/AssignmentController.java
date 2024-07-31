@@ -4,6 +4,7 @@ import com.cst438.domain.*;
 import com.cst438.dto.AssignmentDTO;
 import com.cst438.dto.AssignmentStudentDTO;
 import com.cst438.dto.GradeDTO;
+import com.cst438.dto.SectionDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,9 @@ public class AssignmentController {
 
     @Autowired
     EnrollmentRepository enrollmentRepository;
+
+    @Autowired
+    UserRepository userRepository;
 
     // instructor lists assignments for a section.  Assignments ordered by due date.
     // logged in user must be the instructor for the section
@@ -202,5 +206,38 @@ public class AssignmentController {
 
         }
         return dlist;
+    }
+
+    // get Sections for an instructor
+    @GetMapping("/sections")
+    public List<SectionDTO> getSectionsForInstructor(
+            @RequestParam("email") String instructorEmail,
+            @RequestParam("year") int year ,
+            @RequestParam("semester") String semester )  {
+
+
+        List<Section> sections = sectionRepository.findByInstructorEmailAndYearAndSemester(instructorEmail, year, semester);
+
+        List<SectionDTO> dto_list = new ArrayList<>();
+        for (Section s : sections) {
+            User instructor = null;
+            if (s.getInstructorEmail()!=null) {
+                instructor = userRepository.findByEmail(s.getInstructorEmail());
+            }
+            dto_list.add(new SectionDTO(
+                    s.getSectionNo(),
+                    s.getTerm().getYear(),
+                    s.getTerm().getSemester(),
+                    s.getCourse().getCourseId(),
+                    s.getCourse().getTitle(),
+                    s.getSecId(),
+                    s.getBuilding(),
+                    s.getRoom(),
+                    s.getTimes(),
+                    (instructor!=null) ? instructor.getName() : "",
+                    (instructor!=null) ? instructor.getEmail() : ""
+            ));
+        }
+        return dto_list;
     }
 }
