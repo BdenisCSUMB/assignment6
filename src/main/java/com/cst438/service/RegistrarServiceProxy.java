@@ -46,7 +46,7 @@ public class RegistrarServiceProxy {
     @RabbitListener(queues = "gradebook_service")
     public void receiveFromRegistrar(String message) {
         try {
-            String[] parts = message.split(" ", 2);
+            String[] parts = message.split(" ", 1);
             String action = parts[0];
 
             switch (action) {
