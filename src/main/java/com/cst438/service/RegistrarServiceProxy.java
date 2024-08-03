@@ -46,6 +46,7 @@ public class RegistrarServiceProxy {
     @RabbitListener(queues = "gradebook_service")
     public void receiveFromRegistrar(String message) {
         try {
+            System.out.println("Receive from Registrar " + message);
             String[] parts = message.split(" ", 1);
             String action = parts[0];
 
@@ -158,6 +159,7 @@ public class RegistrarServiceProxy {
     }
 
     private void sendMessage(String s) {
+        System.out.println("Gradebook to Registrar " + s);
         rabbitTemplate.convertAndSend(registrarServiceQueue.getName(), s);
     }
     private static String asJsonString(final Object obj) {
