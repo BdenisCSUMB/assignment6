@@ -77,19 +77,10 @@ public class EnrollmentController {
 
     private void sendGradeUpdateMessage(EnrollmentDTO d) {
         try {
-            String message = "updateEnrollment " + asJsonString(d);
-            registrarServiceProxy.sendMessage(message);
+            registrarServiceProxy.sendGradeUpdateMessage(d);
         } catch (Exception e) {
             System.err.println("Error sending grade update message: " + e.getMessage());
             e.printStackTrace();
-        }
-    }
-
-    private static String asJsonString(final Object obj) {
-        try {
-            return new com.fasterxml.jackson.databind.ObjectMapper().writeValueAsString(obj);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         }
     }
 }

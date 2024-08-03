@@ -157,7 +157,7 @@ public class RegistrarServiceProxy {
         }
     }
 
-    public void sendMessage(String s) {
+    private void sendMessage(String s) {
         rabbitTemplate.convertAndSend(registrarServiceQueue.getName(), s);
     }
     private static String asJsonString(final Object obj) {
