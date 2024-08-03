@@ -33,7 +33,7 @@ public class EnrollmentController {
     // user must be instructor for the section
     @GetMapping("/sections/{sectionNo}/enrollments")
     public List<EnrollmentDTO> getEnrollments(
-            @PathVariable("sectionNo") int sectionNo ) {
+            @PathVariable("sectionNo") int sectionNo) {
 
         List<Enrollment> enrollments = enrollmentRepository
                 .findEnrollmentsBySectionNoOrderByStudentName(sectionNo);
@@ -64,23 +64,14 @@ public class EnrollmentController {
     public void updateEnrollmentGrade(@RequestBody List<EnrollmentDTO> dlist) {
         for (EnrollmentDTO d : dlist) {
             Enrollment e = enrollmentRepository.findById(d.enrollmentId()).orElse(null);
-            if (e==null) {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "enrollment not found "+d.enrollmentId());
+            if (e == null) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "enrollment not found " + d.enrollmentId());
             } else {
                 e.setGrade(d.grade());
                 enrollmentRepository.save(e);
 
-                sendGradeUpdateMessage(d);
+                registrarServiceProxy.sendGradeUpdateMessage(d);
             }
-        }
-    }
-
-    private void sendGradeUpdateMessage(EnrollmentDTO d) {
-        try {
-            registrarServiceProxy.sendGradeUpdateMessage(d);
-        } catch (Exception e) {
-            System.err.println("Error sending grade update message: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 }
