@@ -2,6 +2,7 @@ package com.cst438.controller;
 
 import com.cst438.domain.*;
 import com.cst438.dto.EnrollmentDTO;
+import com.cst438.service.RegistrarServiceProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,9 @@ public class EnrollmentController {
 
     @Autowired
     SectionRepository sectionRepository;
+
+    @Autowired
+    RegistrarServiceProxy registrarServiceProxy;
 
 
     // instructor downloads student enrollments and grades for a section, ordered by student name
@@ -65,7 +69,28 @@ public class EnrollmentController {
             } else {
                 e.setGrade(d.grade());
                 enrollmentRepository.save(e);
+
+                sendGradeUpdateMessage(d);
             }
         }
     }
+
+    private void sendGradeUpdateMessage(EnrollmentDTO d) {
+        try {
+            String message = "updateEnrollment " + asJsonString(d);
+            registrarServiceProxy.sendMessage(message);
+        } catch (Exception e) {
+            System.err.println("Error sending grade update message: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private static String asJsonString(final Object obj) {
+        try {
+            return new com.fasterxml.jackson.databind.ObjectMapper().writeValueAsString(obj);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
+
