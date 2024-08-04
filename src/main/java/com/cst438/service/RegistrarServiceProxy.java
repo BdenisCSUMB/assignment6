@@ -47,7 +47,7 @@ public class RegistrarServiceProxy {
     public void receiveFromRegistrar(String message) {
         try {
             System.out.println("Receive from Registrar " + message);
-            String[] parts = message.split(" ", 1);
+            String[] parts = message.split(" ", 2);
             String action = parts[0];
 
             switch (action) {
@@ -77,7 +77,6 @@ public class RegistrarServiceProxy {
                 case "addSection":
                     SectionDTO sectionDTO = fromJsonString(parts[1], SectionDTO.class);
                     Section newSection = new Section();
-                    newSection.setSecId(sectionDTO.secId());
                     newSection.setSectionNo(sectionDTO.secNo());
                     sectionRepository.save(newSection);
                     break;
@@ -101,6 +100,8 @@ public class RegistrarServiceProxy {
                     newUser.setId(userDTO.id());
                     newUser.setName(userDTO.name());
                     newUser.setEmail(userDTO.email());
+                    newUser.setPassword("defaultPassword");
+                    newUser.setType(userDTO.type());
                     userRepository.save(newUser);
                     break;
 
@@ -158,7 +159,7 @@ public class RegistrarServiceProxy {
         }
     }
 
-    private void sendMessage(String s) {
+    public void sendMessage(String s) {
         System.out.println("Gradebook to Registrar " + s);
         rabbitTemplate.convertAndSend(registrarServiceQueue.getName(), s);
     }
