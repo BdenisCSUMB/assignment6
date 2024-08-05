@@ -116,7 +116,7 @@ public class RegistrarServiceProxy {
                     newUser.setId(userDTO.id());
                     newUser.setName(userDTO.name());
                     newUser.setEmail(userDTO.email());
-                    newUser.setPassword("");
+                    newUser.setPassword(userDTO.name() + "2024");
                     newUser.setType(userDTO.type());
                     userRepository.save(newUser);
                     break;
