@@ -73,7 +73,7 @@ public class GradebookServiceProxy {
     }
 
     public void dropCourse(int enrollmentId) {
-        sendMessage("deleteEnrollment" + enrollmentId);
+        sendMessage("deleteEnrollment " + enrollmentId);
     }
 
 
