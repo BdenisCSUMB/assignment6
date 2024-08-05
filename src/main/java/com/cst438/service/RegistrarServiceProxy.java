@@ -50,7 +50,7 @@ public class RegistrarServiceProxy {
     public void receiveFromRegistrar(String message) {
         try {
             System.out.println("Receive from Registrar " + message);
-            String[] parts = message.split(" ", 1);
+            String[] parts = message.split(" ", 2);
             String action = parts[0];
 
             switch (action) {
