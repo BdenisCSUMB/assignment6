@@ -42,6 +42,9 @@ public class RegistrarServiceProxy {
     @Autowired
     EnrollmentRepository enrollmentRepository;
 
+    @Autowired
+    TermRepository termRepository;
+
 
     @RabbitListener(queues = "gradebook_service")
     public void receiveFromRegistrar(String message) {
@@ -77,16 +80,28 @@ public class RegistrarServiceProxy {
                 case "addSection":
                     SectionDTO sectionDTO = fromJsonString(parts[1], SectionDTO.class);
                     Section newSection = new Section();
-                    newSection.setSecId(sectionDTO.secId());
                     newSection.setSectionNo(sectionDTO.secNo());
+                    newSection.setCourse(courseRepository.findById(sectionDTO.courseId()).get());
+                    newSection.setTerm(termRepository.findByYearAndSemester(sectionDTO.year(), sectionDTO.semester()));
+                    newSection.setSecId(sectionDTO.secId());
+                    newSection.setBuilding(sectionDTO.building());
+                    newSection.setRoom(sectionDTO.room());
+                    newSection.setTimes(sectionDTO.times());
+                    newSection.setInstructor_email(sectionDTO.instructorEmail());
                     sectionRepository.save(newSection);
                     break;
 
                 case "updateSection":
                     SectionDTO updateSectionDTO = fromJsonString(parts[1], SectionDTO.class);
-                    Section existingSection = sectionRepository.findById(updateSectionDTO.secId()).orElse(null);
+                    Section existingSection = sectionRepository.findById(updateSectionDTO.secNo()).orElse(null);
                     if (existingSection != null) {
-                        existingSection.setSectionNo(updateSectionDTO.secNo());
+                        existingSection.setCourse(courseRepository.findById(updateSectionDTO.courseId()).get());
+                        existingSection.setTerm(termRepository.findByYearAndSemester(updateSectionDTO.year(), updateSectionDTO.semester()));
+                        existingSection.setSecId(updateSectionDTO.secId());
+                        existingSection.setBuilding(updateSectionDTO.building());
+                        existingSection.setRoom(updateSectionDTO.room());
+                        existingSection.setTimes(updateSectionDTO.times());
+                        existingSection.setInstructor_email(updateSectionDTO.instructorEmail());
                         sectionRepository.save(existingSection);
                     }
                     break;
@@ -125,6 +140,8 @@ public class RegistrarServiceProxy {
                     Enrollment newEnrollment = new Enrollment();
                     newEnrollment.setEnrollmentId(enrollmentDTO.enrollmentId());
                     newEnrollment.setGrade(enrollmentDTO.grade());
+                    newEnrollment.setSection(sectionRepository.findById(enrollmentDTO.sectionNo()).get());
+                    newEnrollment.setStudent(userRepository.findById(enrollmentDTO.studentId()).get());
                     enrollmentRepository.save(newEnrollment);
                     break;
 
